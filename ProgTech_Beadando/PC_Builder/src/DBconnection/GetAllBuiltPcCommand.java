@@ -11,8 +11,15 @@ public class GetAllBuiltPcCommand implements Command{
     private DBconnection dataBaseConnection;
     private ResultSet results;
     private JFrame frame = new JFrame();
+    private ArrayList<String> listOfBuiltPCs;
+
+    public ArrayList<String> getListOfBuiltPCs() {
+        return listOfBuiltPCs;
+    }
+
     public GetAllBuiltPcCommand(DBconnection dataBaseConnection) {
         this.dataBaseConnection = dataBaseConnection;
+        listOfBuiltPCs = new ArrayList<String>();
     }
 
     public ResultSet getResults() {
@@ -42,6 +49,9 @@ public class GetAllBuiltPcCommand implements Command{
                     "INNER JOIN hattertar h ON pc.hattertar_id = h.id\n" +
                     "INNER JOIN tap t ON pc.tap_id = t.id\n" +
                     "INNER JOIN gephaz gh ON pc.gephaz_id = gh.id");
+            while (this.results.next()){
+                listOfBuiltPCs.add(this.results.getString(0));
+            }
             logger.info("Successful query execution!");
 
         }
