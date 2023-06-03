@@ -1,6 +1,13 @@
 package Objects;
 
+import Observer.Observer;
+import Observer.Pc_Observer;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class PC_object {
+    private List<Pc_Observer> observers = new ArrayList<Pc_Observer>();
     private int alaplap_id,
             cpu_id,
             ram_id,
@@ -17,6 +24,7 @@ public class PC_object {
         this.hattertar_id = hattertar_id;
         this.tap_id = tap_id;
         this.gephaz_id = gephaz_id;
+        //itt kell
     }
 
     public int getAlaplap_id() {
@@ -73,5 +81,9 @@ public class PC_object {
 
     public void setGephaz_id(int gephaz_id) {
         this.gephaz_id = gephaz_id;
+    }
+
+    public void attach(Pc_Observer pcObserver) {
+        observers.add(pcObserver);
     }
 }

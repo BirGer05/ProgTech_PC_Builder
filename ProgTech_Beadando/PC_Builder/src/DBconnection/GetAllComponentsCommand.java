@@ -15,6 +15,9 @@ public class GetAllComponentsCommand implements Command{
     private ResultSet ram;
     private ResultSet gpu;
     private ResultSet storage;
+    private ResultSet haz;
+    private  ResultSet tap;
+    private ResultSet monitor;
 
     public ResultSet getMobo() {
         return mobo;
@@ -35,6 +38,12 @@ public class GetAllComponentsCommand implements Command{
     public ResultSet getStorage() {
         return storage;
     }
+
+    public ResultSet getTap() { return tap; }
+
+    public ResultSet getHaz() { return haz; }
+
+    public ResultSet getMonitor() { return monitor; }
 
     private JFrame frame = new JFrame();
     private DBconnection dBconnection;
@@ -73,50 +82,56 @@ public class GetAllComponentsCommand implements Command{
         listOfStorage = new ArrayList<String>();
     }
 
-    public boolean IsBuilderWantsPC(Class o){
-        return o.isInstance(newPC);
+    public void setMobo(ResultSet mobo) {
+        this.mobo = mobo;
     }
+
+    public void setCpu(ResultSet cpu) {
+        this.cpu = cpu;
+    }
+
+    public void setRam(ResultSet ram) {
+        this.ram = ram;
+    }
+
+    public void setGpu(ResultSet gpu) {
+        this.gpu = gpu;
+    }
+
+    public void setStorage(ResultSet storage) {
+        this.storage = storage;
+    }
+
+    public void setHaz(ResultSet haz) {
+        this.haz = haz;
+    }
+
+    public void setTap(ResultSet tap) {
+        this.tap = tap;
+    }
+
+    public void setMonitor(ResultSet monitor) {
+        this.monitor = monitor;
+    }
+
     @Override
     public void execute() {
         try{
-            /*if(!IsBuilderWantsPC(Objects.class)) {
-                this.setResults(this.dBconnection.getDbConnection().createStatement().executeQuery("select * from alaplap, cpu, ram,gpu,hattertar,monitor,billlentyuzet,touchpad"));
-                logger.info("Sikeres laptop alkatrészek lekérdezés!");
-            }*/
+                this.setMobo(this.dBconnection.getDbConnection().createStatement().executeQuery("select id,gyarto,foglalat,ram_tipus from alaplap"));
 
-                this.mobo = this.dBconnection.getDbConnection().createStatement().executeQuery("select id,gyarto,foglalat,ram_tipus from alaplap");
-                while (this.mobo.next()){
-                    listOfMobos.add(this.mobo.getString("id"));
-                    listOfMobos.add(this.mobo.getString("gyarto"));
-                    listOfMobos.add(this.mobo.getString("foglalat"));
-                    listOfMobos.add(this.mobo.getString("ram_tipus"));
-                }
-                this.cpu = this.dBconnection.getDbConnection().createStatement().executeQuery("select  id,gyarto,tipus,foglalat from cpu");
-                while (this.cpu.next()){
-                    listOfCPUs.add(this.cpu.getString("id"));
-                    listOfCPUs.add(this.cpu.getString("gyarto"));
-                    listOfCPUs.add(this.cpu.getString("tipus"));
-                    listOfCPUs.add(this.cpu.getString("foglalat"));
-                }
-                this.ram = this.dBconnection.getDbConnection().createStatement().executeQuery("select  id,gyarto,ram_tipus from ram");
-                while (this.ram.next()){
-                    listOfRAMs.add(this.ram.getString("id"));
-                    listOfRAMs.add(this.ram.getString("gyarto"));
-                    listOfRAMs.add(this.ram.getString("ram_tipus"));
-                }
-                this.gpu = this.dBconnection.getDbConnection().createStatement().executeQuery("select id,gyarto,vram from gpu");
-                while(this.gpu.next()){
-                    listOfGPUs.add(this.gpu.getString("id"));
-                    listOfGPUs.add(this.gpu.getString("gyarto"));
-                    listOfGPUs.add(this.gpu.getString("vram"));
-                }
-                this.storage = this.dBconnection.getDbConnection().createStatement().executeQuery("select id,gyarto,meret,ssd_e from hattertar");
-                while (this.storage.next()){
-                    listOfStorage.add(this.storage.getString("id"));
-                    listOfStorage.add(this.storage.getString("gyarto"));
-                    listOfStorage.add(this.storage.getString("meret"));
-                    listOfStorage.add(this.storage.getString("ssd_e"));
-                }
+                this.setCpu(this.dBconnection.getDbConnection().createStatement().executeQuery("select  id,gyarto,tipus,foglalat from cpu"));
+
+                this.setRam(this.dBconnection.getDbConnection().createStatement().executeQuery("select  id,gyarto,ram_tipus,meret from ram"));
+
+                this.setGpu(this.dBconnection.getDbConnection().createStatement().executeQuery("select id,gyarto,vram from gpu"));
+
+                this.setStorage(this.dBconnection.getDbConnection().createStatement().executeQuery("select id,gyarto,meret,if(ssd_e = 0, 'HDD', 'SSD') as ssd_e from hattertar"));
+
+                this.setHaz(this.dBconnection.getDbConnection().createStatement().executeQuery("select id,gyarto,nev from gephaz"));
+
+                this.setTap(this.dBconnection.getDbConnection().createStatement().executeQuery("select id,gyarto,teljesitmeny,modularis_e from tap"));
+
+                this.setMonitor(this.dBconnection.getDbConnection().createStatement().executeQuery("select id,gyarto,atmero,felbontas,hdmi_szama,dp_szama,dvi_szama,integralt_e from monitor"));
                 logger.info("Sikeres PC alkatrészek lekérdezés!");
                 logger.info(listOfMobos);
                 logger.info(listOfCPUs);

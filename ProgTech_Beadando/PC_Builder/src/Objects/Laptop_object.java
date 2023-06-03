@@ -1,6 +1,13 @@
 package Objects;
 
+import Observer.Laptop_Observer;
+import Observer.Pc_Observer;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Laptop_object {
+    private List<Laptop_Observer> observers = new ArrayList<Laptop_Observer>();
     private int alaplap_id,
             cpu_id,
             ram_id,
@@ -83,5 +90,13 @@ public class Laptop_object {
 
     public void setTouchpad(int touchpad) {
         this.touchpad = touchpad;
+    }
+
+    public void Dependecy(){
+        //ide kell az sql vizsgálat!!!
+    }
+
+    public void attach(Laptop_Observer laptopObserver) {
+        observers.add(laptopObserver);
     }
 }
