@@ -1,5 +1,7 @@
 package Test.TestDBconnection;
-import DBconnection.*;
+import DBconnection.DBconnection;
+import DBconnection.GetAllBuiltPcCommand;
+import DBconnection.GetAllBuiltLaptopCommand;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -13,14 +15,24 @@ public class TestDBconnection {
             "root",
             "");
     @Test
-    void TestConnection(){
-        assertNotNull(dBconnection);
+    public void TestConnection(){
+        DBconnection testDB =  new DBconnection("jdbc:mysql://localhost:3306/pc_builder",
+        "root",
+                "");
+        assertNotNull(testDB);
     }
     @Test
-    void Test_GetAllBuiltPC() throws SQLException{
-        int id = 2; //example for
+    public void Test_GetAPC() throws SQLException{
+        String id = "2"; //example for an existing value
         GetAllBuiltPcCommand getAllBuiltPcCommand = new GetAllBuiltPcCommand(this.dBconnection);
         getAllBuiltPcCommand.execute();
-        assertTrue(getAllBuiltPcCommand);
+        assertTrue(getAllBuiltPcCommand.getListOfBuiltPCs().contains(id));
+    }
+    @Test
+    public void Test_GetALaptop() throws SQLException{
+        String id = "1"; //example for an existing value
+        GetAllBuiltLaptopCommand getAllBuiltLaptopCommand = new GetAllBuiltLaptopCommand(this.dBconnection);
+        getAllBuiltLaptopCommand.execute();
+        assertTrue(getAllBuiltLaptopCommand.getGetLaptopID().contains(id));
     }
 }

@@ -1,15 +1,39 @@
 package DBconnection;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
+
 import javax.swing.*;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class GetAllBuiltLaptopCommand implements Command{
     private Logger logger = Logger.getLogger("All built PC");
     private DBconnection dataBaseConnection;
     private ResultSet results;
+    private ResultSet LaptopID;
+
+    public ResultSet getLaptopID() {
+        return LaptopID;
+    }
+
+    public void setLaptopID(ResultSet laptopID) {
+        LaptopID = laptopID;
+    }
+
     private JFrame frame = new JFrame();
+    private ArrayList<String> getLaptopID;
+
+    public ArrayList<String> getGetLaptopID() {
+        return getLaptopID;
+    }
+
+    public void setGetLaptopID(ArrayList<String> getLaptopID) {
+        this.getLaptopID = getLaptopID;
+    }
+
     public GetAllBuiltLaptopCommand(DBconnection dataBaseConnection) {
         this.dataBaseConnection = dataBaseConnection;
+        getLaptopID = new ArrayList<String>();
     }
 
     public ResultSet getResults() {
@@ -40,6 +64,10 @@ public class GetAllBuiltLaptopCommand implements Command{
                     "INNER JOIN hattertar h ON lap.hattertar_id = h.id\n" +
                     "INNER JOIN monitor m ON lap.monitor_id = m.id\n");
             logger.info("Successful query execution!");
+            this.LaptopID = this.dataBaseConnection.getDbConnection().createStatement().executeQuery("SELECT id from laptop");
+            this.LaptopID.next();
+            getLaptopID.add(LaptopID.getString(1));
+
         }
         catch (Exception e){
             logger.error(e.getMessage());

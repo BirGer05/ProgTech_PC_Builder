@@ -10,6 +10,16 @@ public class GetAllBuiltPcCommand implements Command{
     private Logger logger = Logger.getLogger("All built PC");
     private DBconnection dataBaseConnection;
     private ResultSet results;
+    private ResultSet PcID;
+
+    public ResultSet getPcID() {
+        return PcID;
+    }
+
+    public void setPcID(ResultSet pcID) {
+        PcID = pcID;
+    }
+
     private JFrame frame = new JFrame();
     private ArrayList<String> listOfBuiltPCs;
 
@@ -53,6 +63,7 @@ public class GetAllBuiltPcCommand implements Command{
                 listOfBuiltPCs.add(this.results.getString(0));
             }
             logger.info("Successful query execution!");
+            this.PcID = this.dataBaseConnection.getDbConnection().createStatement().executeQuery("SELECT id FROM asztali_pc");
 
         }
         catch (Exception e){
