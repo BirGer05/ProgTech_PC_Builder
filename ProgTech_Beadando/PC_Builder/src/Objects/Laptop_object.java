@@ -17,8 +17,18 @@ public class Laptop_object {
     private List<Laptop_Observer> observers = new ArrayList<Laptop_Observer>();
     private DBconnection dbConnection;
     private ResultSet isCompatible;
+    private ArrayList<Integer> compatibleValue;
+
+    public ArrayList<Integer> getCompatibleValue() {
+        return compatibleValue;
+    }
+
+    public void setCompatibleValue(ArrayList<Integer> compatibleValue) {
+        this.compatibleValue = compatibleValue;
+    }
+
     private JFrame frame;
-    private int compatibleValue, alaplap_id,
+    private int alaplap_id,
             cpu_id,
             ram_id,
             gpu_id,
@@ -27,8 +37,7 @@ public class Laptop_object {
             billentyuzet,
             touchpad;
 
-    public Laptop_object(DBconnection dBconnection,int alaplap_id, int cpu_id, int ram_id, int gpu_id, int hattertar_id, int monitor_id, int billentyuzet, int touchpad) {
-        this.dbConnection = dBconnection;
+    public Laptop_object(DBconnection dbConnection, int alaplap_id, int cpu_id, int ram_id, int gpu_id, int hattertar_id, int monitor_id, int billentyuzet, int touchpad) {
         this.alaplap_id = alaplap_id;
         this.cpu_id = cpu_id;
         this.ram_id = ram_id;
@@ -37,6 +46,8 @@ public class Laptop_object {
         this.monitor_id = monitor_id;
         this.billentyuzet = billentyuzet;
         this.touchpad = touchpad;
+        this.dbConnection = dbConnection;
+        compatibleValue = new ArrayList<Integer>();
     }
 
     public int getAlaplap_id() {
@@ -111,13 +122,13 @@ public class Laptop_object {
             compatible.setInt(2, this.getCpu_id());
             compatible.setInt(3, this.getRam_id());
             this.isCompatible = compatible.executeQuery();
-            this.isCompatible.next();
-            laptopObject.compatibleValue = isCompatible.getInt(1);
-            if (compatibleValue == 0) {
+            isCompatible.next();
+            compatibleValue.add(isCompatible.getInt(1));
+            if (compatibleValue.get(0) == 0) {
                 notifyAllObservers();
                 return false;
             }
-
+            return true;
         }
         catch (Exception e){
             JOptionPane.showMessageDialog(frame,e.getMessage(),"HIBA",JOptionPane.ERROR_MESSAGE);

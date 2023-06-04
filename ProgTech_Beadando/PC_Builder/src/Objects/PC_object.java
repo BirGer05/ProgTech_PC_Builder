@@ -1,5 +1,5 @@
 package Objects;
-
+import org.apache.log4j.Logger;
 import Observer.Observer;
 import Observer.Pc_Observer;
 import DBconnection.DBconnection;
@@ -12,14 +12,35 @@ import java.util.List;
 
 public class PC_object {
     private List<Pc_Observer> observers = new ArrayList<Pc_Observer>();
-    private int compatibleValue, alaplap_id,
+    private int alaplap_id,
             cpu_id,
             ram_id,
             gpu_id,
             hattertar_id,
             tap_id,
             gephaz_id;
+    private ArrayList<Integer> compatibleValue;
+
+    public ArrayList<Integer> getCompatibleValue() {
+        return compatibleValue;
+    }
+
+    public void setCompatibleValue(ArrayList<Integer> compatibleValue) {
+        this.compatibleValue = compatibleValue;
+    }
+
     private ResultSet isCompatible;
+
+
+
+    public ResultSet getIsCompatible() {
+        return isCompatible;
+    }
+
+    public void setIsCompatible(ResultSet isCompatible) {
+        this.isCompatible = isCompatible;
+    }
+
     private JFrame frame;
 
     public PC_object(DBconnection dBconnection, int alaplap_id, int cpu_id, int ram_id, int gpu_id, int hattertar_id, int tap_id, int gephaz_id) {
@@ -31,6 +52,7 @@ public class PC_object {
         this.tap_id = tap_id;
         this.gephaz_id = gephaz_id;
         this.dBconnection = dBconnection;
+        this.compatibleValue = new ArrayList<Integer>();
     }
     private DBconnection dBconnection;
     public int getAlaplap_id() {
@@ -95,14 +117,14 @@ public class PC_object {
             compatible.setInt(1, this.getAlaplap_id());
             compatible.setInt(2, this.getCpu_id());
             compatible.setInt(3, this.getRam_id());
-            this.isCompatible = compatible.executeQuery();
-            this.isCompatible.next();
-            pcObject.compatibleValue = isCompatible.getInt(1);
-            if (compatibleValue == 0) {
+            isCompatible = compatible.executeQuery();
+            isCompatible.next();
+            compatibleValue.add(isCompatible.getInt(1));
+            if (compatibleValue.get(0) == 0) {
                 notifyAllObservers();
                 return false;
             }
-
+            return true;
         }
         catch (Exception e){
             JOptionPane.showMessageDialog(frame,e.getMessage(),"HIBA",JOptionPane.ERROR_MESSAGE);

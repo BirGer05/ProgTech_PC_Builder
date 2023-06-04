@@ -69,14 +69,11 @@ public class GetAllBuiltPcCommand implements Command{
                     "INNER JOIN hattertar h ON pc.hattertar_id = h.id\n" +
                     "INNER JOIN tap t ON pc.tap_id = t.id\n" +
                     "INNER JOIN gephaz gh ON pc.gephaz_id = gh.id");
-            while (this.results.next()){
-                listOfBuiltPCs.add(this.results.getString(0));
-            }
             logger.info("Successful query execution!");
             this.PcID = this.dataBaseConnection.getDbConnection().createStatement().executeQuery("SELECT id FROM asztali_pc");
-            this.PcID.next();
-            this.pcIDlist.add(this.PcID.getString(1));
-        }
+            while(this.PcID.next()) {
+                this.pcIDlist.add(this.PcID.getString(1));
+            }}
         catch (Exception e){
             logger.error(e.getMessage());
             JOptionPane.showMessageDialog(frame,e.getMessage(),"Adabázisbeli hiba az épített PC-k lekérdezésekor",JOptionPane.ERROR_MESSAGE);

@@ -19,7 +19,7 @@ public class InsertNewLaptopCommand implements Command{
     @Override
     public void execute() {
         try{
-            PreparedStatement insertLaptop = this.dBconnection.getDbConnection().prepareStatement("insert into laptop(alaplap_id,cpu_id,ram_id,gpu_id,hattertar_id,montior_id,billentyuzet,touchpad)" +
+            PreparedStatement insertLaptop = this.dBconnection.getDbConnection().prepareStatement("insert into laptop(alaplap_id,cpu_id,ram_id,gpu_id,hattertar_id,monitor_id,billentyuzet,touchpad)" +
                     "VALUES (?,?,?,?,?,?,?,?)");
             insertLaptop.setInt(1,newLaptop.getAlaplap_id());
             insertLaptop.setInt(2,newLaptop.getCpu_id());
