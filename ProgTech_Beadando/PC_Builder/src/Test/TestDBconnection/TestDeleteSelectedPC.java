@@ -1,4 +1,4 @@
-package Test.TestDBconnection;
+package TestDBconnection;
 import DBconnection.DBconnection;
 import DBconnection.GetAllBuiltPcCommand;
 import DBconnection.GetAllBuiltLaptopCommand;
