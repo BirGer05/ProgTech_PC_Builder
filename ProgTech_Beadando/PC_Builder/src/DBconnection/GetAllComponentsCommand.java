@@ -133,8 +133,6 @@ public class GetAllComponentsCommand implements Command{
 
                 this.setMonitor(this.dBconnection.getDbConnection().createStatement().executeQuery("select id,gyarto,atmero,felbontas,hdmi_szama,dp_szama,dvi_szama,integralt_e from monitor"));
                 logger.info("Sikeres PC alkatrészek lekérdezés!");
-                logger.info(listOfMobos);
-                logger.info(listOfCPUs);
         }
         catch (Exception e){
             logger.error(e.getMessage());

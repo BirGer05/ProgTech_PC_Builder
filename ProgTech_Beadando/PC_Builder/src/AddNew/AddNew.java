@@ -4,6 +4,8 @@ import DBconnection.DBconnection;
 import DBconnection.GetAllComponentsCommand;
 
 import javax.swing.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
@@ -22,6 +24,7 @@ public class AddNew {
     private JPanel BuildPanel;
     private JButton btn_beszur;
     private JCheckBox laptop_e;
+    private boolean isLaptop;
     private JFrame frame;
     private DBconnection dBconnection;
 
@@ -44,7 +47,15 @@ public class AddNew {
         btn_beszur.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //Insert();
+                Insert();
+            }
+        });
+        laptop_e.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED){
+
+                }
             }
         });
     }
@@ -88,5 +99,8 @@ public class AddNew {
         catch (Exception e){
             logger.warning(e.getMessage());
         }
+    }
+    private void Insert(){
+
     }
 }

@@ -1,14 +1,23 @@
 package Objects;
 
+import DBconnection.DBconnection;
 import Observer.Laptop_Observer;
-import Observer.Pc_Observer;
 
+import org.apache.log4j.Logger;
+import javax.swing.*;
+import java.awt.image.RescaleOp;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Laptop_object {
+    private static Logger logger = Logger.getLogger("Getting compatibilty for laptop");
     private List<Laptop_Observer> observers = new ArrayList<Laptop_Observer>();
-    private int alaplap_id,
+    private DBconnection dbConnection;
+    private ResultSet isCompatible;
+    private JFrame frame;
+    private int compatibleValue, alaplap_id,
             cpu_id,
             ram_id,
             gpu_id,
@@ -17,7 +26,8 @@ public class Laptop_object {
             billentyuzet,
             touchpad;
 
-    public Laptop_object(int alaplap_id, int cpu_id, int ram_id, int gpu_id, int hattertar_id, int monitor_id, int billentyuzet, int touchpad) {
+    public Laptop_object(DBconnection dBconnection,int alaplap_id, int cpu_id, int ram_id, int gpu_id, int hattertar_id, int monitor_id, int billentyuzet, int touchpad) {
+        this.dbConnection = dBconnection;
         this.alaplap_id = alaplap_id;
         this.cpu_id = cpu_id;
         this.ram_id = ram_id;
@@ -93,7 +103,20 @@ public class Laptop_object {
     }
 
     public void Dependecy(){
-        //ide kell az sql vizsgálat!!!
+        try {
+            Laptop_object laptopObject = null;
+            PreparedStatement compatible = dbConnection.getDbConnection().prepareStatement("SELECT if(a.foglalat=c.foglalat AND a.ram_tipus=r.ram_tipus,1,0) as Kompatibilis FROM alaplap a, cpu c, ram r WHERE a.id = ? AND c.id = ? AND r.id = ?");
+            compatible.setInt(1, this.getAlaplap_id());
+            compatible.setInt(2, this.getCpu_id());
+            compatible.setInt(3, this.getRam_id());
+            this.isCompatible = compatible.executeQuery();
+            this.isCompatible.next();
+            laptopObject.compatibleValue = isCompatible.getInt(1);
+
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(frame,e.getMessage(),"HIBA",JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void attach(Laptop_Observer laptopObserver) {

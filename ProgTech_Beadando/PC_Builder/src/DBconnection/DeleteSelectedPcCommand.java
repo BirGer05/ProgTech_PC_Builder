@@ -7,6 +7,16 @@ public class DeleteSelectedPcCommand implements Command{
     private Logger logger = Logger.getLogger("Delete selected PC");
     private DBconnection dataBaseConnection;
     private int id;
+    private String msg = "";
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
     private JFrame frame = new JFrame();
     public DeleteSelectedPcCommand(int id, DBconnection dataBaseConnection) {
         this.id = id;
@@ -21,11 +31,13 @@ public class DeleteSelectedPcCommand implements Command{
             int delCount = delSelected.executeUpdate();
             if(delCount==0){
                 logger.error("Delete wasn't successful");
-                JOptionPane.showMessageDialog(frame,this.id+"-t nem sikerült törölni","Hiba a törléskor",JOptionPane.WARNING_MESSAGE);
+                this.msg = this.id+"-t nem sikerült törölni";
+                JOptionPane.showMessageDialog(frame,this.msg,"Hiba a törléskor",JOptionPane.WARNING_MESSAGE);
             }
             else{
                 logger.info("Delete was successful");
-                JOptionPane.showMessageDialog(frame,this.id+"-val ellátot a mindennapjaintak megkönnyítő eszközt sikerült törölni","Hiba a törléskor",JOptionPane.INFORMATION_MESSAGE);
+                this.msg = this.id+"-val ellátot a mindennapjaintak megkönnyítő eszközt sikerült törölni";
+                JOptionPane.showMessageDialog(frame,this.msg,"Sikeres törlés",JOptionPane.INFORMATION_MESSAGE);
             }
 
         }

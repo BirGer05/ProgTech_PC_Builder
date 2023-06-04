@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 public class DeleteSelectedLaptopCommand implements Command{
     private Logger logger = Logger.getLogger("Delete selected Laptop");
     private DBconnection dataBaseConnection;
+
     private int id;
     private JFrame frame = new JFrame();
     public DeleteSelectedLaptopCommand(int id, DBconnection dataBaseConnection) {
@@ -26,7 +27,7 @@ public class DeleteSelectedLaptopCommand implements Command{
             }
             else{
                 logger.info("Delete was successful");
-                JOptionPane.showMessageDialog(frame,this.id+"-l ellátot a mindennapjaintak megkönnyítő eszközt sikerült törölni","Hiba a törléskor",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame,this.id+"-l ellátot a mindennapjaintak megkönnyítő eszközt sikerült törölni","Sikeres törlés",JOptionPane.INFORMATION_MESSAGE);
             }
 
         }

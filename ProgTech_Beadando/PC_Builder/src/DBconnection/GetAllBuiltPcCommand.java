@@ -11,6 +11,15 @@ public class GetAllBuiltPcCommand implements Command{
     private DBconnection dataBaseConnection;
     private ResultSet results;
     private ResultSet PcID;
+    private ArrayList<String> pcIDlist;
+
+    public void setPcIDlist(ArrayList<String> pcIDlist) {
+        this.pcIDlist = pcIDlist;
+    }
+
+    public ArrayList<String> getPcIDlist() {
+        return pcIDlist;
+    }
 
     public ResultSet getPcID() {
         return PcID;
@@ -30,6 +39,7 @@ public class GetAllBuiltPcCommand implements Command{
     public GetAllBuiltPcCommand(DBconnection dataBaseConnection) {
         this.dataBaseConnection = dataBaseConnection;
         listOfBuiltPCs = new ArrayList<String>();
+        pcIDlist = new ArrayList<String>();
     }
 
     public ResultSet getResults() {
@@ -64,7 +74,8 @@ public class GetAllBuiltPcCommand implements Command{
             }
             logger.info("Successful query execution!");
             this.PcID = this.dataBaseConnection.getDbConnection().createStatement().executeQuery("SELECT id FROM asztali_pc");
-
+            this.PcID.next();
+            this.pcIDlist.add(this.PcID.getString(1));
         }
         catch (Exception e){
             logger.error(e.getMessage());

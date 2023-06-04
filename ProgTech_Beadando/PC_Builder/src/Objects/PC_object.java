@@ -2,21 +2,27 @@ package Objects;
 
 import Observer.Observer;
 import Observer.Pc_Observer;
+import DBconnection.DBconnection;
 
+import javax.swing.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PC_object {
     private List<Pc_Observer> observers = new ArrayList<Pc_Observer>();
-    private int alaplap_id,
+    private int compatibleValue, alaplap_id,
             cpu_id,
             ram_id,
             gpu_id,
             hattertar_id,
             tap_id,
             gephaz_id;
+    private ResultSet isCompatible;
+    private JFrame frame;
 
-    public PC_object(int alaplap_id, int cpu_id, int ram_id, int gpu_id, int hattertar_id, int tap_id, int gephaz_id) {
+    public PC_object(DBconnection dBconnection, int alaplap_id, int cpu_id, int ram_id, int gpu_id, int hattertar_id, int tap_id, int gephaz_id) {
         this.alaplap_id = alaplap_id;
         this.cpu_id = cpu_id;
         this.ram_id = ram_id;
@@ -24,9 +30,9 @@ public class PC_object {
         this.hattertar_id = hattertar_id;
         this.tap_id = tap_id;
         this.gephaz_id = gephaz_id;
-        //itt kell
+        this.dBconnection = dBconnection;
     }
-
+    private DBconnection dBconnection;
     public int getAlaplap_id() {
         return alaplap_id;
     }
@@ -81,6 +87,22 @@ public class PC_object {
 
     public void setGephaz_id(int gephaz_id) {
         this.gephaz_id = gephaz_id;
+    }
+    public void Dependecy(){
+        try {
+            PC_object pcObject = null;
+            PreparedStatement compatible = dBconnection.getDbConnection().prepareStatement("SELECT if(a.foglalat=c.foglalat AND a.ram_tipus=r.ram_tipus,1,0) as Kompatibilis FROM alaplap a, cpu c, ram r WHERE a.id = ? AND c.id = ? AND r.id = ?");
+            compatible.setInt(1, this.getAlaplap_id());
+            compatible.setInt(2, this.getCpu_id());
+            compatible.setInt(3, this.getRam_id());
+            this.isCompatible = compatible.executeQuery();
+            this.isCompatible.next();
+            pcObject.compatibleValue = isCompatible.getInt(1);
+
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(frame,e.getMessage(),"HIBA",JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void attach(Pc_Observer pcObserver) {
