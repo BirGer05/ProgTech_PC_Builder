@@ -3,6 +3,7 @@ package Objects;
 import DBconnection.DBconnection;
 import Observer.Laptop_Observer;
 
+import Observer.Pc_Observer;
 import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.awt.image.RescaleOp;
@@ -102,7 +103,7 @@ public class Laptop_object {
         this.touchpad = touchpad;
     }
 
-    public void Dependecy(){
+    public boolean Dependecy(){
         try {
             Laptop_object laptopObject = null;
             PreparedStatement compatible = dbConnection.getDbConnection().prepareStatement("SELECT if(a.foglalat=c.foglalat AND a.ram_tipus=r.ram_tipus,1,0) as Kompatibilis FROM alaplap a, cpu c, ram r WHERE a.id = ? AND c.id = ? AND r.id = ?");
@@ -112,14 +113,25 @@ public class Laptop_object {
             this.isCompatible = compatible.executeQuery();
             this.isCompatible.next();
             laptopObject.compatibleValue = isCompatible.getInt(1);
+            if (compatibleValue == 0) {
+                notifyAllObservers();
+                return false;
+            }
 
         }
         catch (Exception e){
             JOptionPane.showMessageDialog(frame,e.getMessage(),"HIBA",JOptionPane.ERROR_MESSAGE);
         }
+        return true;
     }
 
     public void attach(Laptop_Observer laptopObserver) {
         observers.add(laptopObserver);
+    }
+
+    public void notifyAllObservers(){
+        for (Laptop_Observer observer : observers) {
+            observer.Notification();
+        }
     }
 }

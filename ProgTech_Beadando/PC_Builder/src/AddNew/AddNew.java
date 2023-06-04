@@ -52,8 +52,8 @@ public class AddNew {
         });
         laptop_e.addItemListener(new ItemListener() {
             @Override
-            public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange() == ItemEvent.SELECTED){
+            public void itemStateChanged(ItemEvent d) {
+                if(d.getStateChange() == ItemEvent.SELECTED){
 
                 }
             }

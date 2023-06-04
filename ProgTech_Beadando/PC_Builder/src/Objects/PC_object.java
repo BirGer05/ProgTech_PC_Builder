@@ -88,7 +88,7 @@ public class PC_object {
     public void setGephaz_id(int gephaz_id) {
         this.gephaz_id = gephaz_id;
     }
-    public void Dependecy(){
+    public boolean Dependecy(){
         try {
             PC_object pcObject = null;
             PreparedStatement compatible = dBconnection.getDbConnection().prepareStatement("SELECT if(a.foglalat=c.foglalat AND a.ram_tipus=r.ram_tipus,1,0) as Kompatibilis FROM alaplap a, cpu c, ram r WHERE a.id = ? AND c.id = ? AND r.id = ?");
@@ -98,14 +98,25 @@ public class PC_object {
             this.isCompatible = compatible.executeQuery();
             this.isCompatible.next();
             pcObject.compatibleValue = isCompatible.getInt(1);
+            if (compatibleValue == 0) {
+                notifyAllObservers();
+                return false;
+            }
 
         }
         catch (Exception e){
             JOptionPane.showMessageDialog(frame,e.getMessage(),"HIBA",JOptionPane.ERROR_MESSAGE);
         }
+        return true;
     }
 
     public void attach(Pc_Observer pcObserver) {
         observers.add(pcObserver);
+    }
+
+    public void notifyAllObservers(){
+        for (Pc_Observer observer : observers) {
+            observer.Notification();
+        }
     }
 }
