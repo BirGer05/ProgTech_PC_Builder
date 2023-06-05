@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class GetAllBuiltLaptopCommand implements Command{
-    private Logger logger = Logger.getLogger("All built PC");
+    private Logger logger = Logger.getLogger("All built Laptop");
     private DBconnection dataBaseConnection;
     private ResultSet results;
     private ResultSet LaptopID;
@@ -65,8 +65,10 @@ public class GetAllBuiltLaptopCommand implements Command{
                     "INNER JOIN monitor m ON lap.monitor_id = m.id\n");
             logger.info("Successful query execution!");
             this.LaptopID = this.dataBaseConnection.getDbConnection().createStatement().executeQuery("SELECT id from laptop");
-            this.LaptopID.next();
-            getLaptopID.add(LaptopID.getString(1));
+            while(this.LaptopID.next()) {
+                getLaptopID.add(LaptopID.getString(1));
+            }
+            logger.info(getLaptopID);
 
         }
         catch (Exception e){

@@ -26,7 +26,7 @@ public class TestDBconnection {
         String id = "2"; //example for an existing value
         GetAllBuiltPcCommand getAllBuiltPcCommand = new GetAllBuiltPcCommand(this.dBconnection);
         getAllBuiltPcCommand.execute();
-        assertTrue(getAllBuiltPcCommand.getListOfBuiltPCs().contains(id));
+        assertTrue(getAllBuiltPcCommand.getPcIDlist().contains(id));
     }
     @Test
     public void Test_GetALaptop() throws SQLException{

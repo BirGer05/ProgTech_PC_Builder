@@ -72,8 +72,10 @@ public class GetAllBuiltPcCommand implements Command{
             logger.info("Successful query execution!");
             this.PcID = this.dataBaseConnection.getDbConnection().createStatement().executeQuery("SELECT id FROM asztali_pc");
             while(this.PcID.next()) {
-                this.pcIDlist.add(this.PcID.getString(1));
-            }}
+                this.pcIDlist.add(PcID.getString(1));
+            }
+            logger.info(pcIDlist);
+            }
         catch (Exception e){
             logger.error(e.getMessage());
             JOptionPane.showMessageDialog(frame,e.getMessage(),"Adabázisbeli hiba az épített PC-k lekérdezésekor",JOptionPane.ERROR_MESSAGE);
